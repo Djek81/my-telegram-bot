@@ -3,5 +3,4 @@ pytz
 requests
 gspread
 oauth2client
-os
 json
