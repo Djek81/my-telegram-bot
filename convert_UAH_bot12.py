@@ -15,6 +15,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import logging  # Добавляем модуль для логирования
 import os
+import json
 
 # Настройка логирования
 logging.basicConfig(
@@ -58,9 +59,8 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")  # Ваш ID табли�
             "https://spreadsheets.google.com/feeds",
             "https://www.googleapis.com/auth/drive",
         ]
-        creds = ServiceAccountCredentials.from_json_keyfile_name(
-            "credentials.json", scope
-        )
+        google_credentials = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(google_credentials, scope)
         client = gspread.authorize(creds)
         worksheet = client.open_by_key(key).get_worksheet(0)
 
