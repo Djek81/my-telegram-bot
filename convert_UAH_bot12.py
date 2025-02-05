@@ -14,6 +14,7 @@ import requests
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import logging  # Добавляем модуль для логирования
+import os
 
 # Настройка логирования
 logging.basicConfig(
@@ -51,7 +52,7 @@ async def request_distance2(update, context):
 
 
 # Получение данных из Google Sheets
-def fetch_google_sheet_data(cells, key="1y3-IyVeiOVfhPvZwcrKf_mIVrxIsBkhin2iIPs78tKw"):
+def fetch_google_sheet_data(cells, key=os.getenv("key")  # Ваш ID таблицы):
     try:
         scope = [
             "https://spreadsheets.google.com/feeds",
@@ -291,7 +292,7 @@ async def button(update, context: ContextTypes.DEFAULT_TYPE):
 # Функция для отправки курса валют в канал
 async def send_rate_to_channel(context: ContextTypes.DEFAULT_TYPE):
     bot = context.bot
-    channel_id = "-1002304573608"  # Ваш ID канала
+    channel_id = os.getenv("channel_id")  # Ваш ID канала
     rate = get_exchange_rate()
 
     message = f"Текущий курс USD к UAH: {rate}"
@@ -300,7 +301,7 @@ async def send_rate_to_channel(context: ContextTypes.DEFAULT_TYPE):
 
 # Отправка стартового сообщения в канал
 async def send_start_message_to_channel(app: Application):
-    channel_id = "-1002304573608"  # Ваш ID канала
+    channel_id = os.getenv("channel_id")  # Ваш ID канала
     message = "Бот запущен! 🚀\nВведите команду /start для начала работы."
     await app.bot.send_message(chat_id=channel_id, text=message)
 
@@ -316,7 +317,7 @@ async def calculate(update, context):
 
 # Основная функция
 def main():
-    TOKEN = "7913394275:AAHrSrQz2-Ev15nXZsbIsQnzEDuzpGaagQA"  # Ваш токен бота
+    TOKEN = os.getenv("TOKEN") # Ваш токен бота
 
     app = Application.builder().token(TOKEN).build()
 
