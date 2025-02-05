@@ -53,14 +53,16 @@ async def request_distance2(update, context):
 
 
 # Получение данных из Google Sheets
-def fetch_google_sheet_data(cells, key=os.getenv("key")  # Ваш ID таблицы):
+def fetch_google_sheet_data(cells, key=os.getenv("key")):
     try:
         scope = [
             "https://spreadsheets.google.com/feeds",
             "https://www.googleapis.com/auth/drive",
         ]
         google_credentials = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(google_credentials, scope)
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(
+            google_credentials, scope
+        )
         client = gspread.authorize(creds)
         worksheet = client.open_by_key(key).get_worksheet(0)
 
@@ -317,7 +319,7 @@ async def calculate(update, context):
 
 # Основная функция
 def main():
-    TOKEN = os.getenv("TOKEN") # Ваш токен бота
+    TOKEN = os.getenv("TOKEN")  # Ваш токен бота
 
     app = Application.builder().token(TOKEN).build()
 
