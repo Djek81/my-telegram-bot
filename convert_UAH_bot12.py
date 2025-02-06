@@ -54,6 +54,7 @@ async def request_distance2(update, context):
 
 # Получение данных из Google Sheets
 
+
 def fetch_google_sheet_data(cells, key=os.getenv("key")):  # Ваш ID таблицы
     try:
         scope = [
@@ -320,9 +321,7 @@ async def calculate(update, context):
 
 # Основная функция
 def main():
-    TOKEN = os.getenv("TOKEN")  # Ваш токен бота
-
-    app = Application.builder().token(TOKEN).build()
+    app = Application.builder().token(os.getenv("TOKEN_id")).build()
 
     # Указываем часовой пояс Польши
     poland_tz = pytz.timezone("Europe/Warsaw")
