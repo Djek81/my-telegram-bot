@@ -16,6 +16,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 import logging  # Добавляем модуль для логирования
 import os
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Настройка логирования
 logging.basicConfig(
