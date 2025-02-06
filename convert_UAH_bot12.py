@@ -321,7 +321,8 @@ async def calculate(update, context):
 
 # Основная функция
 def main():
-    app = Application.builder().token(os.getenv("TOKEN_id")).build()
+    TOKEN = "7913394275:AAHrSrQz2-Ev15nXZsbIsQnzEDuzpGaagQA"
+    app = Application.builder().token(TOKEN).build()
 
     # Указываем часовой пояс Польши
     poland_tz = pytz.timezone("Europe/Warsaw")
