@@ -53,7 +53,8 @@ async def request_distance2(update, context):
 
 
 # Получение данных из Google Sheets
-def fetch_google_sheet_data(cells, key=os.getenv("key")):
+
+def fetch_google_sheet_data(cells, key=os.getenv("key")):  # Ваш ID таблицы
     try:
         scope = [
             "https://spreadsheets.google.com/feeds",
