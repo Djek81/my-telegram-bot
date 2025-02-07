@@ -24,11 +24,24 @@ load_dotenv()
 
 def sync_time():
     try:
-        subprocess.run(["sudo", "apt", "install", "-y", "ntpdate"], check=True)
-        subprocess.run(["sudo", "ntpdate", "pool.ntp.org"], check=True)
-        print("Время успешно синхронизировано.")
+        # Попытка использовать chrony для синхронизации времени
+        print("Пытаемся синхронизировать время с помощью chrony...")
+        subprocess.run(["sudo", "apt", "install", "-y", "chrony"], check=True)
+        subprocess.run(["sudo", "chronyc", "-a", "burst", "4/4"], check=True)
+        print("Время успешно синхронизировано с помощью chrony.")
+
     except subprocess.CalledProcessError as e:
-        print(f"Ошибка синхронизации времени: {e}")
+        print(f"Ошибка при попытке синхронизировать время с помощью chrony: {e}")
+        print("Попытка использовать timedatectl для синхронизации времени...")
+
+        try:
+            # Если chrony не удалось установить или запустить, пробуем использовать timedatectl
+            subprocess.run(["sudo", "timedatectl", "set-ntp", "true"], check=True)
+            print("Время успешно синхронизировано с помощью timedatectl.")
+
+        except subprocess.CalledProcessError as e:
+            print(f"Ошибка синхронизации времени с использованием timedatectl: {e}")
+            print("Ошибка синхронизации времени. Пожалуйста, проверьте настройки NTP.")
 
 
 # Синхронизация времени перед работой с Google Sheets
