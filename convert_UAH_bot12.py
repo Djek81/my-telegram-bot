@@ -16,9 +16,23 @@ from oauth2client.service_account import ServiceAccountCredentials
 import logging  # Добавляем модуль для логирования
 import os
 import json
+import subprocess
 from dotenv import load_dotenv
 
 load_dotenv()
+
+
+def sync_time():
+    try:
+        subprocess.run(["sudo", "apt", "install", "-y", "ntpdate"], check=True)
+        subprocess.run(["sudo", "ntpdate", "pool.ntp.org"], check=True)
+        print("Время успешно синхронизировано.")
+    except subprocess.CalledProcessError as e:
+        print(f"Ошибка синхронизации времени: {e}")
+
+
+# Синхронизация времени перед работой с Google Sheets
+sync_time()
 
 # Настройка логирования
 logging.basicConfig(
