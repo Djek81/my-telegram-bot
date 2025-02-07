@@ -56,24 +56,51 @@ async def request_distance2(update, context):
 
 
 # Получение данных из Google Sheets
-
-
 def fetch_google_sheet_data(cells, key=os.getenv("key")):  # Ваш ID таблицы
     try:
+        # Проверка, что ключ таблицы передан
+        if not key:
+            print("Ошибка: Переменная окружения 'key' не установлена.")
+            return ["Ошибка: Не указан ключ таблицы"] * len(cells)
+
+        # Задание scope
         scope = [
             "https://spreadsheets.google.com/feeds",
             "https://www.googleapis.com/auth/drive",
         ]
-        google_credentials = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
+
+        # Загрузка JSON-данных из переменной окружения
+        google_credentials = os.getenv("GOOGLE_CREDENTIALS")
+        if not google_credentials:
+            print("Ошибка: Переменная окружения 'GOOGLE_CREDENTIALS' не установлена.")
+            return ["Ошибка: Нет данных авторизации"] * len(cells)
+
+        try:
+            google_credentials = json.loads(google_credentials)
+        except json.JSONDecodeError as e:
+            print(
+                f"Ошибка: Переменная 'GOOGLE_CREDENTIALS' не является корректным JSON. {e}"
+            )
+            return ["Ошибка: Неверный JSON"] * len(cells)
+
+        # Авторизация
         creds = ServiceAccountCredentials.from_json_keyfile_dict(
             google_credentials, scope
         )
         client = gspread.authorize(creds)
+
+        # Открытие таблицы и листа
         worksheet = client.open_by_key(key).get_worksheet(0)
 
+        # Получение значений из указанных ячеек
         return [worksheet.acell(cell).value for cell in cells]
+
+    except gspread.exceptions.APIError as api_error:
+        print(f"Ошибка API Google Sheets: {api_error}")
+        return ["Ошибка API"] * len(cells)
+
     except Exception as e:
-        log_error(f"Ошибка при работе с Google Sheets: {e}")
+        print(f"Неизвестная ошибка при работе с Google Sheets: {e}")
         return ["Ошибка"] * len(cells)
 
 
