@@ -17,6 +17,7 @@ import logging  # Добавляем модуль для логирования
 import os
 import json
 import subprocess
+import base64
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -97,23 +98,30 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")):  # Ваш ID табл�
         ]
 
         # Загрузка JSON-данных из переменной окружения
-        google_credentials = os.getenv("GOOGLE_CREDENTIALS")
-        if not google_credentials:
-            print("Ошибка: Переменная окружения 'GOOGLE_CREDENTIALS' не установлена.")
-            return ["Ошибка: Нет данных авторизации"] * len(cells)
+        # Декодируем JSON из переменной среды
+        google_credentials_json = base64.b64decode(
+            os.getenv("GOOGLE_CREDENTIALS")
+        ).decode("utf-8")
+        creds = Credentials.from_service_account_info(
+            json.loads(google_credentials_json)
+        )
+        # google_credentials = os.getenv("GOOGLE_CREDENTIALS")
+        # if not google_credentials:
+        #    print("Ошибка: Переменная окружения 'GOOGLE_CREDENTIALS' не установлена.")
+        #   return ["Ошибка: Нет данных авторизации"] * len(cells)
 
-        try:
-            google_credentials = json.loads(google_credentials)
-        except json.JSONDecodeError as e:
-            print(
-                f"Ошибка: Переменная 'GOOGLE_CREDENTIALS' не является корректным JSON. {e}"
-            )
-            return ["Ошибка: Неверный JSON"] * len(cells)
+        # try:
+        #    google_credentials = json.loads(google_credentials)
+        # except json.JSONDecodeError as e:
+        #    print(
+        #        f"Ошибка: Переменная 'GOOGLE_CREDENTIALS' не является корректным JSON. {e}"
+        #    )
+        #    return ["Ошибка: Неверный JSON"] * len(cells)
 
         # Авторизация
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(
-            google_credentials, scope
-        )
+        # creds = ServiceAccountCredentials.from_json_keyfile_dict(
+        #    google_credentials, scope
+        # )
         client = gspread.authorize(creds)
 
         # Открытие таблицы и листа
