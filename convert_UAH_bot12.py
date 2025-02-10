@@ -13,6 +13,7 @@ import pytz
 import requests
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 import logging  # Добавляем модуль для логирования
 import os
 import json
@@ -66,7 +67,7 @@ def init_credentials():
     global credentials
     try:
         if not os.getenv("GOOGLE_CREDENTIALS"):
-            logger.info(
+            logger.error(
                 "Ошибка: Переменная окружения 'GOOGLE_CREDENTIALS' не установлена."
             )
             return False
@@ -81,7 +82,7 @@ def init_credentials():
         return True
 
     except Exception as e:
-        logger.info(f"Ошибка инициализации учетных данных: {e}")
+        logger.error(f"Ошибка инициализации учетных данных: {e}")
         return False
 
 
@@ -90,12 +91,12 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")):
     try:
         # Проверка, что ключ таблицы передан
         if not key:
-            logger.info("Ошибка: Переменная окружения 'key' не установлена.")
+            logger.error("Ошибка: Переменная окружения 'key' не установлена.")
             return ["Ошибка: Не указан ключ таблицы"] * len(cells)
 
         # Проверка, что учетные данные были успешно инициализированы
         if credentials is None:
-            logger.info("Ошибка: Учетные данные не инициализированы.")
+            logger.error("Ошибка: Учетные данные не инициализированы.")
             return ["Ошибка: Учетные данные не найдены"] * len(cells)
 
         # Авторизация клиента с помощью глобальных учетных данных
@@ -108,15 +109,15 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")):
         return [worksheet.acell(cell).value for cell in cells]
 
     except gspread.exceptions.SpreadsheetNotFound:
-        logger.info("Ошибка: Таблица не найдена. Проверьте ключ таблицы.")
+        logger.error("Ошибка: Таблица не найдена. Проверьте ключ таблицы.")
         return ["Ошибка: Таблица не найдена"] * len(cells)
 
     except gspread.exceptions.APIError as api_error:
-        logger.info(f"Ошибка API Google Sheets: {api_error}")
+        logger.error(f"Ошибка API Google Sheets: {api_error}")
         return ["Ошибка API"] * len(cells)
 
     except Exception as e:
-        logger.info(f"Неизвестная ошибка при работе с Google Sheets: {e}")
+        logger.error(f"Неизвестная ошибка при работе с Google Sheets: {e}")
         return ["Ошибка"] * len(cells)
 
 
@@ -124,7 +125,7 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")):
 if init_credentials():
     logger.info("Учетные данные готовы к использованию.")
 else:
-    logger.info("Не удалось инициализировать учетные данные.")
+    logger.error("Не удалось инициализировать учетные данные.")
 
 
 def get_prices_usd():
