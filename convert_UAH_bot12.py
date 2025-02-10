@@ -25,28 +25,30 @@ load_dotenv()
 
 def sync_time():
     try:
-        # Попытка использовать chrony для синхронизации времени
-        print("Пытаемся синхронизировать время с помощью chrony...")
-        subprocess.run(["sudo", "apt", "install", "-y", "chrony"], check=True)
-        subprocess.run(["sudo", "chronyc", "-a", "burst", "4/4"], check=True)
-        print("Время успешно синхронизировано с помощью chrony.")
+        # Попытка использовать ntpdate для синхронизации времени
+        print("Пытаемся синхронизировать время с помощью ntpdate...")
+        subprocess.run(["sudo", "apt", "update"], check=True)
+        subprocess.run(["sudo", "apt", "install", "-y", "ntpdate"], check=True)
+        subprocess.run(["sudo", "ntpdate", "pool.ntp.org"], check=True)
+        print("Время успешно синхронизировано с помощью ntpdate.")
 
     except subprocess.CalledProcessError as e:
-        print(f"Ошибка при попытке синхронизировать время с помощью chrony: {e}")
-        print("Попытка использовать timedatectl для синхронизации времени...")
+        print(f"Ошибка синхронизации времени с помощью ntpdate: {e}")
+        print("Попытка использовать альтернативные методы синхронизации...")
 
         try:
-            # Если chrony не удалось установить или запустить, пробуем использовать timedatectl
+            # Попытка синхронизации времени через timedatectl
             subprocess.run(["sudo", "timedatectl", "set-ntp", "true"], check=True)
             print("Время успешно синхронизировано с помощью timedatectl.")
 
         except subprocess.CalledProcessError as e:
             print(f"Ошибка синхронизации времени с использованием timedatectl: {e}")
-            print("Ошибка синхронизации времени. Пожалуйста, проверьте настройки NTP.")
+            print("Пожалуйста, проверьте настройки времени на сервере.")
 
 
-# Синхронизация времени перед работой с Google Sheets
+# Синхронизация времени перед запуском
 sync_time()
+
 
 # Настройка логирования
 logging.basicConfig(
@@ -105,23 +107,6 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")):  # Ваш ID табл�
         creds = Credentials.from_service_account_info(
             json.loads(google_credentials_json)
         )
-        # google_credentials = os.getenv("GOOGLE_CREDENTIALS")
-        # if not google_credentials:
-        #    print("Ошибка: Переменная окружения 'GOOGLE_CREDENTIALS' не установлена.")
-        #   return ["Ошибка: Нет данных авторизации"] * len(cells)
-
-        # try:
-        #    google_credentials = json.loads(google_credentials)
-        # except json.JSONDecodeError as e:
-        #    print(
-        #        f"Ошибка: Переменная 'GOOGLE_CREDENTIALS' не является корректным JSON. {e}"
-        #    )
-        #    return ["Ошибка: Неверный JSON"] * len(cells)
-
-        # Авторизация
-        # creds = ServiceAccountCredentials.from_json_keyfile_dict(
-        #    google_credentials, scope
-        # )
         client = gspread.authorize(creds)
 
         # Открытие таблицы и листа
