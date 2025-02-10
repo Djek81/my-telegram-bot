@@ -57,35 +57,59 @@ async def request_distance2(update, context):
     return DISTANCE_INPUT
 
 
+# Создаем глобальную переменную для хранения учетных данных
+credentials = None
+
+
+# Инициализация учетных данных
+def init_credentials():
+    global credentials
+    try:
+        if not os.getenv("GOOGLE_CREDENTIALS"):
+            logger.info(
+                "Ошибка: Переменная окружения 'GOOGLE_CREDENTIALS' не установлена."
+            )
+            return False
+
+        google_credentials_json = base64.b64decode(
+            os.getenv("GOOGLE_CREDENTIALS")
+        ).decode("utf-8")
+        credentials_dict = json.loads(google_credentials_json)
+
+        credentials = Credentials.from_service_account_info(credentials_dict)
+        logger.info("Учетные данные успешно инициализированы.")
+        return True
+
+    except Exception as e:
+        logger.info(f"Ошибка инициализации учетных данных: {e}")
+        return False
+
+
 # Получение данных из Google Sheets
-def fetch_google_sheet_data(cells, key=os.getenv("key")):  # Ваш ID таблицы
+def fetch_google_sheet_data(cells, key=os.getenv("key")):
     try:
         # Проверка, что ключ таблицы передан
         if not key:
             logger.info("Ошибка: Переменная окружения 'key' не установлена.")
             return ["Ошибка: Не указан ключ таблицы"] * len(cells)
 
-        # Задание scope
-        scope = [
-            "https://spreadsheets.google.com/feeds",
-            "https://www.googleapis.com/auth/drive",
-        ]
+        # Проверка, что учетные данные были успешно инициализированы
+        if credentials is None:
+            logger.info("Ошибка: Учетные данные не инициализированы.")
+            return ["Ошибка: Учетные данные не найдены"] * len(cells)
 
-        # Загрузка JSON-данных из переменной окружения
-        # Декодируем JSON из переменной среды
-        google_credentials_json = base64.b64decode(
-            os.getenv("GOOGLE_CREDENTIALS")
-        ).decode("utf-8")
-        creds = Credentials.from_service_account_info(
-            json.loads(google_credentials_json)
-        )
-        client = gspread.authorize(creds)
+        # Авторизация клиента с помощью глобальных учетных данных
+        client = gspread.authorize(credentials)
 
         # Открытие таблицы и листа
         worksheet = client.open_by_key(key).get_worksheet(0)
 
         # Получение значений из указанных ячеек
         return [worksheet.acell(cell).value for cell in cells]
+
+    except gspread.exceptions.SpreadsheetNotFound:
+        logger.info("Ошибка: Таблица не найдена. Проверьте ключ таблицы.")
+        return ["Ошибка: Таблица не найдена"] * len(cells)
 
     except gspread.exceptions.APIError as api_error:
         logger.info(f"Ошибка API Google Sheets: {api_error}")
@@ -94,6 +118,13 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")):  # Ваш ID табл�
     except Exception as e:
         logger.info(f"Неизвестная ошибка при работе с Google Sheets: {e}")
         return ["Ошибка"] * len(cells)
+
+
+# Инициализация учетных данных перед использованием функции
+if init_credentials():
+    logger.info("Учетные данные готовы к использованию.")
+else:
+    logger.info("Не удалось инициализировать учетные данные.")
 
 
 def get_prices_usd():
