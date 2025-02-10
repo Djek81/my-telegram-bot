@@ -58,6 +58,12 @@ async def request_distance2(update, context):
     return DISTANCE_INPUT
 
 
+# Области доступа для Google Sheets API
+SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",  # Доступ к таблицам
+    "https://www.googleapis.com/auth/drive",  # Доступ к Google Drive (если нужно)
+]
+
 # Создаем глобальную переменную для хранения учетных данных
 credentials = None
 
@@ -77,7 +83,11 @@ def init_credentials():
         ).decode("utf-8")
         credentials_dict = json.loads(google_credentials_json)
 
-        credentials = Credentials.from_service_account_info(credentials_dict)
+        # Указываем scopes при создании учетных данных
+        credentials = Credentials.from_service_account_info(
+            credentials_dict,
+            scopes=SCOPES,
+        )
         logger.info("Учетные данные успешно инициализированы.")
         return True
 
