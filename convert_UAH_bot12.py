@@ -22,34 +22,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
-def sync_time():
-    try:
-        # Попытка использовать ntpdate для синхронизации времени
-        print("Пытаемся синхронизировать время с помощью ntpdate...")
-        subprocess.run(["sudo", "apt", "update"], check=True)
-        subprocess.run(["sudo", "apt", "install", "-y", "ntpdate"], check=True)
-        subprocess.run(["sudo", "ntpdate", "pool.ntp.org"], check=True)
-        print("Время успешно синхронизировано с помощью ntpdate.")
-
-    except subprocess.CalledProcessError as e:
-        print(f"Ошибка синхронизации времени с помощью ntpdate: {e}")
-        print("Попытка использовать альтернативные методы синхронизации...")
-
-        try:
-            # Попытка синхронизации времени через timedatectl
-            subprocess.run(["sudo", "timedatectl", "set-ntp", "true"], check=True)
-            print("Время успешно синхронизировано с помощью timedatectl.")
-
-        except subprocess.CalledProcessError as e:
-            print(f"Ошибка синхронизации времени с использованием timedatectl: {e}")
-            print("Пожалуйста, проверьте настройки времени на сервере.")
-
-
-# Синхронизация времени перед запуском
-sync_time()
-
-
 # Настройка логирования
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -90,7 +62,7 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")):  # Ваш ID табл�
     try:
         # Проверка, что ключ таблицы передан
         if not key:
-            print("Ошибка: Переменная окружения 'key' не установлена.")
+            logger.info("Ошибка: Переменная окружения 'key' не установлена.")
             return ["Ошибка: Не указан ключ таблицы"] * len(cells)
 
         # Задание scope
@@ -116,11 +88,11 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")):  # Ваш ID табл�
         return [worksheet.acell(cell).value for cell in cells]
 
     except gspread.exceptions.APIError as api_error:
-        print(f"Ошибка API Google Sheets: {api_error}")
+        logger.info(f"Ошибка API Google Sheets: {api_error}")
         return ["Ошибка API"] * len(cells)
 
     except Exception as e:
-        print(f"Неизвестная ошибка при работе с Google Sheets: {e}")
+        logger.info(f"Неизвестная ошибка при работе с Google Sheets: {e}")
         return ["Ошибка"] * len(cells)
 
 
@@ -334,13 +306,6 @@ async def button(update, context: ContextTypes.DEFAULT_TYPE):
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await query.edit_message_text(text=message, reply_markup=reply_markup)
-
-
-# Обработчик текстовых сообщений
-# async def handle_message(update, context: ContextTypes.DEFAULT_TYPE):
-# Отправка стартового сообщения с кнопками при первом сообщении пользователя
-#   if update.message and not update.message.text.startswith("/start"):
-#      await start(update, context)
 
 
 # Функция для отправки курса валют в канал
