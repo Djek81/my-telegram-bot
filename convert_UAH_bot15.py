@@ -342,6 +342,8 @@ def main():
     )  # 10:00 по польскому времени
     logger.info("RAILWAY_PROJECT_NAME:", os.getenv("RAILWAY_PROJECT_NAME"))
     logger.info("channel_id:", os.getenv("channel_id"))
+    print("RAILWAY_PROJECT_NAME:", os.getenv("RAILWAY_PROJECT_NAME"))
+    print("channel_id:", os.getenv("channel_id"))
 
     # Добавляем ConversationHandler
     app.add_handler(
