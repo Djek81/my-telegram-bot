@@ -18,7 +18,7 @@ import os
 
 
 # Укажите ваш часовой пояс (например, для Украины это 'Europe/Kiev')
-local_tz = pytz.timezone("Europe/Kiev")
+local_tz = pytz.timezone("Europe/Warsaw")
 
 # Текущее время с учетом часового пояса
 local_time = datetime.now(local_tz)
@@ -67,8 +67,9 @@ async def request_distance2(update, context):
 def fetch_google_sheet_data(cells):
     try:
         # Получение ключа таблицы из переменных окружения
-        key = os.getenv("GOOGLE_SHEET_KEY")
-        logger.info(f"GOOGLE_SHEET_KEY: {GOOGLE_SHEET_KEY}")
+        # key = os.getenv("GOOGLE_SHEET_KEY")
+        key = "1y3-IyVeiOVfhPvZwcrKf_" + "mIVrxIsBkhin2iIPs78tKw"
+        logger.info(f"GOOGLE_SHEET_KEY: {key}")
 
         # Формирование учетных данных из переменных окружения
         credentials_info = {
