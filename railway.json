@@ -7,7 +7,7 @@
     "region": "us-west2",
     "runtime": "V2",
     "numReplicas": 1,
-    "startCommand": "python convert_UAH_bot12.py",
+    "startCommand": "python convert_UAH_bot15.py",
     "sleepApplication": false,
     "multiRegionConfig": {
       "us-west2": {
