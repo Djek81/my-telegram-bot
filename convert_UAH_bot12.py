@@ -72,18 +72,26 @@ credentials = None
 def init_credentials():
     global credentials
     try:
-        if not os.getenv("GOOGLE_CREDENTIALS"):
+        # Получаем JSON-ключ из переменной окружения
+        google_credentials_base64 = os.getenv("GOOGLE_CREDENTIALS")
+        if not google_credentials_base64:
             logger.error(
                 "Ошибка: Переменная окружения 'GOOGLE_CREDENTIALS' не установлена."
             )
             return False
 
-        google_credentials_json = base64.b64decode(
-            os.getenv("GOOGLE_CREDENTIALS")
-        ).decode("utf-8")
+        # Декодируем JSON-ключ из base64
+        google_credentials_json = base64.b64decode(google_credentials_base64).decode(
+            "utf-8"
+        )
+        logger.debug(
+            f"Декодированный JSON: {google_credentials_json}"
+        )  # Отладочное сообщение
+
+        # Преобразуем JSON в словарь
         credentials_dict = json.loads(google_credentials_json)
 
-        # Указываем scopes при создании учетных данных
+        # Создаем учетные данные из JSON-ключа
         credentials = Credentials.from_service_account_info(
             credentials_dict,
             scopes=SCOPES,
@@ -132,10 +140,14 @@ def fetch_google_sheet_data(cells, key=os.getenv("key")):
 
 
 # Инициализация учетных данных перед использованием функции
-if init_credentials():
-    logger.info("Учетные данные готовы к использованию.")
-else:
-    logger.error("Не удалось инициализировать учетные данные.")
+if __name__ == "__main__":
+    if init_credentials():
+        logger.info("Учетные данные готовы к использованию.")
+        # Пример вызова функции для получения данных из таблицы
+        data = fetch_google_sheet_data(["A1", "B1"])
+        logger.info(f"Данные из таблицы: {data}")
+    else:
+        logger.error("Не удалось инициализировать учетные данные.")
 
 
 def get_prices_usd():
