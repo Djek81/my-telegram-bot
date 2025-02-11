@@ -340,6 +340,8 @@ def main():
     app.job_queue.run_daily(
         send_rate_to_channel, time(hour=9, minute=0, tzinfo=poland_tz)
     )  # 10:00 по польскому времени
+    logger.info("RAILWAY_PROJECT_NAME:", os.getenv("RAILWAY_PROJECT_NAME"))
+    logger.info("channel_id:", os.getenv("channel_id"))
 
     # Добавляем ConversationHandler
     app.add_handler(
