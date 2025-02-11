@@ -8,20 +8,13 @@ from telegram.ext import (
     filters,
     ConversationHandler,
 )
-from datetime import datetime, timedelta, time
+from datetime import datetime, time
 import pytz
 import requests
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2.service_account import Credentials
 import logging  # Добавляем модуль для логирования
 import os
-import json
-import subprocess
-import base64
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Настройка логирования
 logging.basicConfig(
