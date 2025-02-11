@@ -8,13 +8,26 @@ from telegram.ext import (
     filters,
     ConversationHandler,
 )
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 import pytz
 import requests
 import gspread
 from google.oauth2.service_account import Credentials
 import logging  # Добавляем модуль для логирования
 import os
+
+
+# Укажите ваш часовой пояс (например, для Украины это 'Europe/Kiev')
+local_tz = pytz.timezone("Europe/Kiev")
+
+# Текущее время с учетом часового пояса
+local_time = datetime.now(local_tz)
+
+# Если нужно добавить час (например, если сервер использует UTC, но бот ожидает местное время)
+corrected_time = local_time + timedelta(hours=1)
+
+print("Local Time:", local_time.strftime("%Y-%m-%d %H:%M:%S"))
+print("Corrected Time:", corrected_time.strftime("%Y-%m-%d %H:%M:%S"))
 
 # Настройка логирования
 logging.basicConfig(
@@ -69,7 +82,7 @@ def fetch_google_sheet_data(cells):
             "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
             "client_x509_cert_url": os.getenv("GOOGLE_CLIENT_X509_CERT_URL"),
         }
-
+        logger.info(f"Credentials Info: {credentials_info}")
         # Авторизация в Google API
         creds = Credentials.from_service_account_info(
             credentials_info,
@@ -340,10 +353,10 @@ def main():
     app.job_queue.run_daily(
         send_rate_to_channel, time(hour=9, minute=0, tzinfo=poland_tz)
     )  # 10:00 по польскому времени
-    logger.info("RAILWAY_PROJECT_NAME:", os.getenv("RAILWAY_PROJECT_NAME"))
-    logger.info("channel_id:", os.getenv("channel_id"))
-    print("RAILWAY_PROJECT_NAME:", os.getenv("RAILWAY_PROJECT_NAME"))
-    print("channel_id:", os.getenv("channel_id"))
+    logger.info(f"RAILWAY_PROJECT_NAME: {os.getenv('RAILWAY_PROJECT_NAME')}")
+    logger.info(f"channel_id: {os.getenv('channel_id')}")
+    print(f"RAILWAY_PROJECT_NAME: {os.getenv('RAILWAY_PROJECT_NAME')}")
+    print(f"channel_id: {os.getenv('channel_id')}")
 
     # Добавляем ConversationHandler
     app.add_handler(
