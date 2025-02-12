@@ -24,7 +24,7 @@ local_tz = pytz.timezone("Europe/Warsaw")
 local_time = datetime.now(local_tz)
 
 # Если нужно добавить час (например, если сервер использует UTC, но бот ожидает местное время)
-corrected_time = local_time + timedelta(hours=1)
+corrected_time = local_time - timedelta(hours=1)
 
 print("Local Time:", local_time.strftime("%Y-%m-%d %H:%M:%S"))
 print("Corrected Time:", corrected_time.strftime("%Y-%m-%d %H:%M:%S"))
@@ -74,15 +74,15 @@ def fetch_google_sheet_data(cells):
         # Формирование учетных данных из переменных окружения
         credentials_info = {
             "type": "service_account",
-            "project_id": "uah-bot-project",
-            "private_key_id": "601aaa7a81b8b55c79f587c1e94d436b2524d065",
-            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQChNTim3RaWoZME\n3iGj1yw86FvrTaTf0ybLwxTEDEXgaZqzs3dqOzs/1Q+EbEw0mFEXPzxLsViY9M8d\npcpmP+NXwKSmon6Uduib6Apudys3IeDKpXl7UMaWW8V3zGXixGSjg0zInwGCEU/e\n9vsOaq8n4knFFSS86bmN9KBy7XWjMFcTwzkNvijiHPtzEepofki9hoGx3axRVGD5\nfJsoIU3aZacOUZzfVZUFejmc58OQ87i9aYTPRpBm/2yoPYeIVfvfXokn+/o5XXit\ns2uwkgdxlwInTWq7bFVCrW/azMiE1yr39W5x1u7JRGRcn1ePvo3mJaC4c/eOzGvt\nE9rI8jIZAgMBAAECggEAARSZfNrR/i/2i4uOl6nHSOA4z36teneQlMCJuNepNzwV\n9prfE8XyW3bq2/Ua3KZhssFwfsRhRuMrKTR1gxJuDGZE5D4GEaorXHIlccCYOE4g\nktMhmY88yYCzdd5Xl3m//+2PG/Ae4zeI/MJUg+/4nRCR9IF0BdUeMoKfea24Ql/7\nlxMZ0YsCQb5u1tK2cysu+U0rfgxjzBZB1Kf1U0CUnOWi/o/KIxpbGmVVT+WnpOWT\nmQiOLBeGUgA1vIAr7lKTkSh6tRk/s/qgoAPnJhxOH+mOAw4FBWrIYO79IakzMrVx\nCZL/i9LU/n+sCGtbYdNVWZqRWgXU0JNTAk2gI4WS4QKBgQDXhnmt1nW1tp3fnh0P\n8W4qgXRnphk4N8LbelbRm29zke20Z/1VeNsn1BqWfX7my4Xg9XO8eGGq5JAveKJZ\nwxxBObK1qnHwPjOr2ISTpWx32mi0Qj1brLcxuzVVrr65YxkevFl8D40xcotx1Mqn\n+sRXUH+jMz13yoqtNrNJ3quScQKBgQC/e2Z0jFQTu6G81H03yLl8zfszarBKcT/5\n0XJwHGmpoaOTiSs4dJ2RCOe/i9TzLepGvhvWPbfs7Oz89DaJtlwIm3HqLLMY2w/N\n6kspC+bq0ctqiNB89E3PCoiHXKwVTfRlr2wWChAlwry3nQWcrg7ySVkVzMrGDLxg\nqOTl63aeKQKBgHcrTup08373K5HyriUbnIt6KvAIolc4VdDfc1PQuy5O2P1wpl31\nRlBechkV6O4aSLtbXJQwh+hjGup0rGgvftb93TefuAJbklyJirzMsg4PQOey3JRt\nCpo/5jyrM5/0EHazNFNpketuZ3YYb7mz6Y5R31FQysMKxeUCot3MdlexAoGAZoDd\noOh6HbIk69voSFOIkDoIDkc/pion8Ejh9QgQvEEOOu2EGI28x6Y3wT9OuPtMXaBp\ncG/LpOZUGzl0dJYNgIIOIijZmyWxuS6CG7AGZo/2T8p7qVhyyrG90pCWgjUf7stQ\nlh++8yfjNHu3RF+dGrCPIu9lYU3yDeB74GUDM7kCgYBjxvndwyM/RhN4Po34cgVa\nOVEL9U03RoOfH+clsHdkaJvp/wQ3fVbrFH+pCmp0TFRR8Zzoo2BHlnww7nfNTGZl\nSLx7r9U5s2okHm0oE92AFLLxGHX9k1GUZFPcb6A/VwIrvIUEmivoylFoOZO1evbF\n5EXBnW9mNw9Km8CdqWm4NQ==\n-----END PRIVATE KEY-----\n",
-            "client_email": "google-sheets-access@uah-bot-project.iam.gserviceaccount.com",
-            "client_id": "117294692513868440902",
+            "project_id": "uah-bot-project-448013",
+            "private_key_id": "855ed546d5a38199a178c15aebb182bd69087f4d",
+            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCxg6r28NHVuVru\nzPDqRFKihyq8q4AN7znMtLu805dkJ9EkbVXJF/fttMqvTLbuURbflSOfAZ3XLNvh\nxKjjazgJCm2c2XeFfLQJNR/KLpIZupW/mxjd25Kc7rWCDUN4ThfJor33k/G+nhmS\n0bHPN4EMSGrB3PAIz6CS2PB1AhuAgXzENYmjCxAWYrS5oEPI9iUKYZtS2GXuEiK6\nBtCz7mHjLOQQNOUV5d7bDBtbvvwMZ8lokf3Q4TBMrxHiwdf9/zINCMDG9IN6RQwm\nCD4DEQVFDiGRNiyNiYGa9y0Rcy5Ra1SKRtkHjmaC2SNu6X+ASlt7X5bw1s8f6wQx\nD1jNOEz/AgMBAAECggEALDfVLYAddPSgDx4j4Oc2AmBTJ/48frwZlMFshoPakUtN\n0JofpWEAFElVt8cPRlwSq40V+3TGoaP9/cYkH8pEghQD6+9L04eVvTlresyQ/jG5\nPapfzlv0sHzR39x38w7Y5BRS58oFjOsLCcSMW0bDMZEUbsgfTsKRiCLb+vmUajTr\nuLahvKArOIzCXSoOftQala0mxdrhXDJNuKCGrRWs27qKZpRj8lRp7SBqS4fSaxQi\nIVSbFh5+N0cLfDVeh4kICFhCH6zLk6Ka0h/mE0bkFXJavEvaJ2yfGWgb9jXtqTXM\nKZjAtG+qm4VyO4qdbFmVwPth4zqFbDlAxCaRyqSRQQKBgQD3+qimwwTg7l0QzCoG\nnratKL+TLKgBhWhtzl7csZMem/cjSTF6sv0VFLGQmJbrM3Lj7ZAZoqWsrMWlxc4L\n1s2fCp4ITzYtL8t8g2NkACdrO0gaY05aZRtP3TKJ5hppsaH9yqba0/NdBLLgQfzx\nrQKaZh60R1e12uDtek5C+xOK3wKBgQC3QYoWfpS7Ljtx35/M1yh5B5IPoQ8Mz5ny\nuOguAWD0wTSfN5gJSoTcoZNFX2ejqLIzKMMgpxSaadaHpVIYIZ4w3nBj0fnYJHXK\nVdcrmWx9QeQCFpv+dCjnxXbmB7RZkIlyW4AHh3LYRAR0/ua8motrC6uBeXUthLoZ\nA0JFJOuh4QKBgFs6Pb1L1YmiZ158naFd1jqR2RidvxkAKVDsMP3j3gnOuvaiQK+x\nFWYh/MkDOdJBVS0BAphLu8NwtC2uPYUhevfdghHwgi/Re3zNIU1yuQ27+2Spz/N1\narzQ1XzhyCnGDaA+Y2/xtYAs8FmMLTADxAdlNjqAXIYshb8X1Z7Sm3flAoGAZUd3\nhc8XbAu1Fs48hv0yhRFGDBU7OB1UO+0thJ+Gcj6FUqlrAVeJ7lXuCp0brjuBoPya\nOuWcYWq1AerAYE3UG7YT71cQ+f/MibK/ZH06lE9iMDVGqW6RXOapO6BucEGNdQJU\n09RsCFIvFGn8I6hV/SdJ9himRi3gnApNCeHJyIECgYAfe3RC2qs3zAx5vsSYFs39\ny5rzwbWvUFH7ssMi/xtQNiUmSx6UCN2Sr+hERUfSHxl/yfNjyE+ldneYV0KIUr9F\nuA9iRApuTKwmtb6PNGqwc5i/mGi77YsQwi/cZBRDf/yRs0pdgDkVMJ7Y1rGIdcj5\nVmZN764Mq+fZecppKK+/gg==\n-----END PRIVATE KEY-----\n",
+            "client_email": "token-key@uah-bot-project-448013.iam.gserviceaccount.com",
+            "client_id": "108655560595569800378",
             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
             "token_uri": "https://oauth2.googleapis.com/token",
             "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/google-sheets-access%40uah-bot-project.iam.gserviceaccount.com",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/token-key%40uah-bot-project-448013.iam.gserviceaccount.com",
             "universe_domain": "googleapis.com",
         }
         logger.info(f"Credentials Info: {credentials_info}")
