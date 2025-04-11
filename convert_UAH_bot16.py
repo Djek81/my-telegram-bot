@@ -26,9 +26,6 @@ local_time = datetime.now(local_tz)
 # Если нужно добавить час (например, если сервер использует UTC, но бот ожидает местное время)
 corrected_time = local_time - timedelta(hours=1)
 
-print("Local Time:", local_time.strftime("%Y-%m-%d %H:%M:%S"))
-print("Corrected Time:", corrected_time.strftime("%Y-%m-%d %H:%M:%S"))
-
 # Настройка логирования
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -41,15 +38,15 @@ DISTANCE_INPUT = 1
 
 # Обработка ошибок и логирование
 def log_error(error_msg):
-    logger.error(f"Ошибка: {error_msg}")  # Логируем ошибки
+    logger.error(f"Помилка: {error_msg}")  # Логируем ошибки
 
 
 # Функция для запроса расходов
 async def request_distance(update, context):
     context.user_data["transport_type"] = "expenses"  # Устанавливаем тип как "expenses"
-    logger.info("Запрос транспортных расходов от пользователя")
+
     await update.callback_query.message.reply_text(
-        "Введите транспортные расходы до места назначения в гривне:"
+        "Введіть транспортні витрати до місця призначення в гривнях:"
     )
     return DISTANCE_INPUT
 
@@ -57,9 +54,8 @@ async def request_distance(update, context):
 # Функция для запроса расстояния
 async def request_distance2(update, context):
     context.user_data["transport_type"] = "distance"  # Устанавливаем тип как "distance"
-    logger.info("Запрос расстояния от пользователя")
     await update.callback_query.message.reply_text(
-        "Введите расстояние до места назначения в км (тариф для расчета 40 грн/км):"
+        "Введіть відстань до місця призначення в км (тариф для розрахунку 40 грн/км):"
     )
     return DISTANCE_INPUT
 
@@ -85,7 +81,7 @@ def fetch_google_sheet_data(cells):
             "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/token-key%40uah-bot-project-448013.iam.gserviceaccount.com",
             "universe_domain": "googleapis.com",
         }
-        logger.info(f"Credentials Info: {credentials_info}")
+
         # Авторизация в Google API
         creds = Credentials.from_service_account_info(
             credentials_info,
@@ -100,7 +96,7 @@ def fetch_google_sheet_data(cells):
         return [worksheet.acell(cell).value for cell in cells]
     except Exception as e:
         log_error(f"Ошибка при работе с Google Sheets: {e}")
-        return ["Ошибка"] * len(cells)
+        return ["Помилка"] * len(cells)
 
 
 def get_prices_usd():
@@ -109,11 +105,11 @@ def get_prices_usd():
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return (
-        f"Цены на дизельное топливо (обновлено {now}):\n"
+        f"Ціни на дизельне паливо (оновлено {now}):\n"
         f"1. Jasło: {prices[0]}$/t\n"
         f"2. Małaszewicze: {prices[1]}$/t\n"
         f"3. Wola: {prices[2]}$/t\n"
-        f"4. Radzionków: {prices[3]}$/t\n"
+        f"4. Czechowice: {prices[3]}$/t\n"
         f"GASOIL {prices[4]} - {prices[5]}$"
     )
 
@@ -124,11 +120,11 @@ def get_prices_uah():
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return (
-        f"Цены на дизельное топливо (обновлено {now}):\n"
+        f"Ціни на дизельне паливо (оновлено {now}):\n"
         f"1. Jasło: {prices[0]}грн/л\n"
         f"2. Małaszewicze: {prices[1]}грн/л\n"
         f"3. Wola: {prices[2]}грн/л\n"
-        f"4. Radzionków: {prices[3]}грн/л\n"
+        f"4. Czechowice: {prices[3]}грн/л\n"
         f"GASOIL {prices[4]} - {prices[5]}$"
     )
 
@@ -163,11 +159,11 @@ async def calculate_price_with_transport(update, context):
 
     # Рассчитываем стоимость с учетом транспортировки
     message = (
-        f"Цены на дизельное топливо с доставкой (запрос в гривнах)(обновлено {now}):\n"
+        f"Ціни на дизельне паливо з доставкою (запит у гривнях) (оновлено {now}):\n"
         f"1. Jasło: {(fca_prices[0] + distance * fca_prices[4] * 0.001 / 25):.2f} грн/л\n"
         f"2. Małaszewicze: {(fca_prices[1] + distance * fca_prices[5] * 0.001 / 25):.2f} грн/л\n"
         f"3. Wola: {(fca_prices[2] + distance * fca_prices[6] * 0.001 / 25):.2f} грн/л\n"
-        f"4. Radzionków: {(fca_prices[3] + distance * fca_prices[7] * 0.001 / 25):.2f} грн/л\n"
+        f"4. Czechowice: {(fca_prices[3] + distance * fca_prices[7] * 0.001 / 25):.2f} грн/л\n"
     )
 
     # Отправляем результат пользователю
@@ -192,11 +188,11 @@ async def calculate_price_with_transport2(update, context):
 
     # Рассчитываем стоимость с учетом транспортировки
     message = (
-        f"Цены на дизельное топливо с доставкой (запрос в км))(обновлено {now}):\n"
+        f"Ціни на дизельне паливо з доставкою (запит у км) (оновлено {now}):\n"
         f"1. Jasło: {(fca_prices[0] + distance * 40 * 2 * fca_prices[4] * 0.001 / 25):.2f} грн/л\n"
         f"2. Małaszewicze: {(fca_prices[1] + distance * 40 * 2 * fca_prices[5] * 0.001 / 25):.2f} грн/л\n"
         f"3. Wola: {(fca_prices[2] + distance * 40 * 2 * fca_prices[6] * 0.001 / 25):.2f} грн/л\n"
-        f"4. Radzionków: {(fca_prices[3] + distance * 40 * 2 * fca_prices[7] * 0.001 / 25):.2f} грн/л\n"
+        f"4. Czechowice: {(fca_prices[3] + distance * 40 * 2 * fca_prices[7] * 0.001 / 25):.2f} грн/л\n"
     )
 
     # Отправляем результат пользователю
@@ -209,27 +205,27 @@ async def send_message_with_buttons(chat_id, bot, message):
     keyboard = [
         [
             InlineKeyboardButton(
-                "Обновить цены в долларах", callback_data="refresh_prices"
+                "Оновити ціни у доларах", callback_data="refresh_prices"
             )
         ],
         [
             InlineKeyboardButton(
-                "Обновить цены в гривне", callback_data="refresh_prices_UAH"
+                "Оновити ціни у гривні", callback_data="refresh_prices_UAH"
             )
         ],
         [
             InlineKeyboardButton(
-                "Цена с транспортом (затраты)", callback_data="price_with_transport"
+                "Ціна з транспортом (витрати)", callback_data="price_with_transport"
             )
         ],
         [
             InlineKeyboardButton(
-                "Цена с транспортом (км)", callback_data="price_with_transport2"
+                "Ціна з транспортом (км)", callback_data="price_with_transport2"
             )
         ],
         [
             InlineKeyboardButton(
-                "Проверить курс гривны НБУ", callback_data="check_again"
+                "Перевірити курс гривні НБУ", callback_data="check_again"
             )
         ],
         [
@@ -259,7 +255,7 @@ async def button(update, context: ContextTypes.DEFAULT_TYPE):
 
     if query.data == "check_again":
         rate = get_exchange_rate()
-        message = f"Текущий курс USD к UAH: {rate}"
+        message = f"Поточний курс USD до UAH: {rate}"
     elif query.data == "refresh_prices":
         message = get_prices_usd()
     elif query.data == "refresh_prices_UAH":
@@ -281,27 +277,27 @@ async def button(update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [
             InlineKeyboardButton(
-                "Обновить цены в долларах", callback_data="refresh_prices"
+                "Оновити ціни у доларах", callback_data="refresh_prices"
             )
         ],
         [
             InlineKeyboardButton(
-                "Обновить цены в гривне", callback_data="refresh_prices_UAH"
+                "Оновити ціни у гривні", callback_data="refresh_prices_UAH"
             )
         ],
         [
             InlineKeyboardButton(
-                "Цена с транспортом (затраты)", callback_data="price_with_transport"
+                "Ціна з транспортом (витрати)", callback_data="price_with_transport"
             )
         ],
         [
             InlineKeyboardButton(
-                "Цена с транспортом (км)", callback_data="price_with_transport2"
+                "Ціна з транспортом (км)", callback_data="price_with_transport2"
             )
         ],
         [
             InlineKeyboardButton(
-                "Проверить курс гривны НБУ", callback_data="check_again"
+                "Перевірити курс гривні НБУ", callback_data="check_again"
             )
         ],
         [
@@ -321,14 +317,14 @@ async def send_rate_to_channel(context: ContextTypes.DEFAULT_TYPE):
     channel_id = os.getenv("channel_id")  # Ваш ID канала
     rate = get_exchange_rate()
 
-    message = f"Текущий курс USD к UAH: {rate}"
+    message = f"Поточний курс USD до UAH: {rate}"
     await send_message_with_buttons(channel_id, bot, message)
 
 
 # Отправка стартового сообщения в канал
 async def send_start_message_to_channel(app: Application):
     channel_id = os.getenv("channel_id")  # Ваш ID канала
-    message = "Бот запущен! 🚀\nВведите команду /start для начала работы."
+    message = "Бот запущено! 🚀\nВведіть команду /start для початку роботи."
     await app.bot.send_message(chat_id=channel_id, text=message)
 
 
@@ -356,12 +352,6 @@ def main():
     app.job_queue.run_daily(
         send_rate_to_channel, time(hour=9, minute=0, tzinfo=poland_tz)
     )  # 10:00 по польскому времени
-    logger.info(f"RAILWAY_PROJECT_NAME: {os.getenv('RAILWAY_PROJECT_NAME')}")
-    logger.info(f"channel_id: {os.getenv('channel_id')}")
-    print(f"RAILWAY_PROJECT_NAME: {os.getenv('RAILWAY_PROJECT_NAME')}")
-    print(f"channel_id: {os.getenv('channel_id')}")
-    print("Local Time:", local_time.strftime("%Y-%m-%d %H:%M:%S"))
-    print("Corrected Time:", corrected_time.strftime("%Y-%m-%d %H:%M:%S"))
 
     # Добавляем ConversationHandler
     app.add_handler(
