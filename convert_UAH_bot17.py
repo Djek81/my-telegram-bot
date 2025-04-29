@@ -19,9 +19,9 @@ from telegram import Bot
 from telegram.ext import Updater
 
 # Получаем переменные окружения
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+TOKEN = os.getenv("TOKEN")
 # Проверка, что переменные найдены
-if not TELEGRAM_TOKEN:
+if not TOKEN:
     raise ValueError("TELEGRAM_TOKEN не установлен в переменных окружения Railway")
 
 # Укажите ваш часовой пояс (например, для Украины это 'Europe/Kiev')
@@ -346,7 +346,7 @@ async def calculate(update, context):
 
 # Основная функция
 def main():
-    app = Application.builder().token(TELEGRAM_TOKEN).build()
+    app = Application.builder().token(TOKEN).build()
 
     # Указываем часовой пояс Польши
     poland_tz = pytz.timezone("Europe/Warsaw")
