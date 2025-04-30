@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, BotCommand
 from telegram.ext import (
     Application,
     ContextTypes,
@@ -35,6 +35,18 @@ logger = logging.getLogger(__name__)
 
 # Определяем этапы диалога
 DISTANCE_INPUT = 1
+
+
+# Функция для установки меню команд
+async def set_bot_commands(bot):
+    commands = [
+        BotCommand("start", "Запустити бота"),
+        BotCommand("prices", "Ціни на паливо"),
+        BotCommand("currency", "Курс валют"),
+        BotCommand("transport", "Ціна з транспортом"),
+        BotCommand("interbank", "Міжбанк онлайн"),
+    ]
+    await bot.set_my_commands(commands)
 
 
 # Обработка ошибок и логирование
@@ -241,11 +253,46 @@ async def send_message_with_buttons(chat_id, bot, message):
     await bot.send_message(chat_id=chat_id, text=message, reply_markup=get_main_menu())
 
 
-# Обработчик команды /start с параметром
+# Обработчик команды /start
 async def start(update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     message = "Вітаємо! Оберіть опцію в меню нижче:"
     await send_message_with_buttons(chat_id, context.bot, message)
+
+
+# Обработчик команды /prices
+async def prices(update, context: ContextTypes.DEFAULT_TYPE):
+    message = "Оберіть валюту для цін:"
+    await update.message.reply_text(message, reply_markup=get_prices_menu())
+
+
+# Обработчик команды /currency
+async def currency(update, context: ContextTypes.DEFAULT_TYPE):
+    message = "Оберіть опцію для курсу валют:"
+    await update.message.reply_text(message, reply_markup=get_currency_menu())
+
+
+# Обработчик команды /transport
+async def transport(update, context: ContextTypes.DEFAULT_TYPE):
+    message = "Оберіть тип розрахунку транспорту:"
+    await update.message.reply_text(message, reply_markup=get_transport_menu())
+
+
+# Обработчик команды /interbank
+async def interbank(update, context: ContextTypes.DEFAULT_TYPE):
+    message = "Переходьте за посиланням для перегляду міжбанку онлайн:"
+    await update.message.reply_text(
+        message,
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "Міжбанк онлайн", url="https://minfin.com.ua/currency/mb/usd/"
+                    )
+                ]
+            ]
+        ),
+    )
 
 
 # Обработчик кнопок
@@ -317,6 +364,11 @@ async def calculate(update, context):
 
 def main():
     app = Application.builder().token(TOKEN).build()
+
+    # Установка команд меню
+    app.add_handler(CommandHandler("start", start), group=0)
+    app.job_queue.run_once(lambda context: set_bot_commands(context.bot), 0)
+
     poland_tz = pytz.timezone("Europe/Warsaw")
     app.job_queue.run_daily(
         send_rate_to_channel, time(hour=7, minute=0, tzinfo=poland_tz)
@@ -346,6 +398,10 @@ def main():
         )
     )
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("prices", prices))
+    app.add_handler(CommandHandler("currency", currency))
+    app.add_handler(CommandHandler("transport", transport))
+    app.add_handler(CommandHandler("interbank", interbank))
     app.add_handler(CallbackQueryHandler(button))
     print("Бот запущен...")
     app.run_polling()
