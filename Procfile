@@ -1,1 +1,1 @@
-worker: python convert_UAH_bot17.py
+worker: python convert_UAH_bot19.py
