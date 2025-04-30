@@ -13,7 +13,7 @@ from telegram.ext import (
     filters,
     ConversationHandler,
 )
-from datetime import datetime, time, timedelta
+from datetime import datetime, time
 import pytz
 import requests
 import gspread
@@ -21,6 +21,7 @@ from google.oauth2.service_account import Credentials
 import logging
 import os
 from cachetools import TTLCache
+import asyncio
 
 # Настройка логирования
 logging.basicConfig(
@@ -382,16 +383,19 @@ async def calculate(update, context):
     return ConversationHandler.END
 
 
+# Асинхронная инициализация
+async def initialize_bot(app: Application):
+    await app.bot.delete_webhook(drop_pending_updates=True)
+    logger.info("Webhook удален, переключение на polling")
+    await send_start_message_to_channel(app)
+
+
 # Основная функция
 def main():
     app = Application.builder().token(TOKEN).build()
 
-    async def initialize_bot(app: Application):
-        await app.bot.delete_webhook(drop_pending_updates=True)
-        logger.info("Webhook удален, переключение на polling")
-        await send_start_message_to_channel(app)
-
-    app.run_async(initialize_bot(app))
+    # Выполняем инициализацию асинхронно
+    asyncio.run(initialize_bot(app))
 
     app.job_queue.run_daily(
         send_rate_to_channel, time(hour=7, minute=0, tzinfo=poland_tz)
