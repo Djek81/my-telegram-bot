@@ -62,7 +62,7 @@ def fetch_google_sheet_data(cells):
             "type": "service_account",
             "project_id": "uah-bot-project-448013",
             "private_key_id": "855ed546d5a38199a178c15aebb182bd69087f4d",
-            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCxg6r28NHVuVru\nzPDqRFKihyq8q4AN7znMtLu805dkJ9EkbVXJF/fttMqvTLbuURbflSOfAZ3XLNvh\nxKjjazgJCm2c2XeFfLQJNR/KLpIZupW/mxjd25Kc7rWCDUN4ThfJor33k/G+nhmS\n0bHPN4EMSGrB3PAIz6CS2PB1AhuAgXzENYmjCxAWYrS5oEPI9iUKYZtS2GXuEiK6\nBtCz7mHjLOQQNOUV5d7bDBtbvvwMZ8lokf3Q4TBMrxHiwdf9/zINCMDG9IN6RQwm\nCD4DEQVFDiGRNiyNiYGa9y0Rcy5Ra1SKRtkHjmaC2SNu6X+ASlt7X5bw1s8f6wQx\nD1jNOEz/AgMBAAECggEALDfVLYAddPSgDx4j4Oc2AmBTJ/48frwZlMFshoPakUtN\n0JofpWEAFElVt8cPRlwSq40V+3TGoaP9/cYkH8pEghQD6+9L04eVvTlresyQ/jG5\nPapfzlv0sHzR39x38w7Y5BRS58oFjOsLCcSMW0bDMZEUbsgfTsKRiCLb+vmUajTr\nuLahvKArOIzCXSoOftQala0mxdrhXDJNuKCGrRWs27qKZpRj8lRp7SBqS4fSaxQi\nIVSbFh5+N0cLfDVeh4kICFhCH6zLk6Ka0h/mE0bkFXJavEvaJ2yfGWgb9jXtqTXM\nKZjAtG+qm4VyO4qdbFmVwPth4zqFbDlAxCaRyqSRQQKBgQD3+qimwwTg7l0QzCoG\nnratKL+TLKgBhWhtzl7csZMem/cjSTF6sv0VFLGQmJbrM3Lj7ZAZoqWsrMWlxc4L\n1s2fCp4ITzYtL8t8g2NkACdrO0gaY05aZRtP3TKJ5hppsaH9yqba0/NdBLLgQfzx\nrQKaZh60R1e12uDtek5C+xOK3wKBgQC3QYoWfpS7Ljtx35/M1yh5B5IPoQ8Mz5ny\nuOguAWD0wTSfN5gJSoTcoZNFX2ejqLIzKMMgpxSaadaHpVIYIZ4w3nBj0fnYJHXK\nVdcrmWx9QeQCFpv+dCjnxXbmB7RZkIlyW4AHh3LYRAR0/ua8motrC6uBeXUthLoZ\nA0JFJOuh4QKBgFs6Pb1L1YmiZ158naFd1jqR2RidvxkAKVDsMP3j3gnOuvaiQK+x\nFWYh/MkDOdJBVS0BAphLu8NwtC2uPYUhevfdghHwgi/Re3zNIU1yuQ27+2Spz/N1\narzQ1XzhyCnGDaA+Y2/xtYAs8FmMLTADxAdlNjqAXIYshb8X1Z7Sm3flAoGAZUd3\nhc8XbAu1Fs48hv0yhRFGDBU7OB1UO+0thJ+Gcj6FUqlrAVeJ7lXuCp0brjuBoPya\nOuWcYWq1AerAYE3UG7YT71cQ+f/MibK/ZH06lE9iMDVGqW6RXOapO6BucEGNdQJU\n09RsCFIvFGn8I6hV/SdJ9himRi3gnApNCeHJyIECgYAfe3RC2qs3zAx5vsSYFs39\ny5rzwbWvUFH7ssMi/xtQNiUmSx6UCN2Sr+hERUfSHxl/yfNjyE+ldneYV0KIUr9F\nuA9iRApuTKwmtb6PNGqwc5i/mGi77YsQwi/cZBRDf/yRs0pdgDkVMJ7Y1rGIdcj5\nVmZN764Mq+fZecppKK+/gg==\n-----END PRIVATE KEY-----\n",
+            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCxg6r28NHVuVru\nzPDqRFKihyq8q4AN7znMtLu805dkJ9EkbVXJF/fttMqvTLbuURbflSOfAZ3XLNvh\nxKjjazgJCm2c2XeFfLQJNR/KLpIZupW/mxjd25Kc7rWCDUN4ThfJor33k/G+nhmS\n0bHPN4EMSGrB3PAIz6CS2PB1AhuAgXzENYmjCxAWYrS5oEPI9iUKYZtS2GXuEiK6\nBtCz7mHjLOQQNOUV5d7bDBtbvvwMZ8lokf3Q4TBMrxHiwdf9/zINCMDG9IN6RQwm\nCD4DEQVFDiGRNiyNiYGa9y0Rcy5Ra1SKRtkHjmaC2SNu6X+ASlt7X5bw1s8f6wQx\nD1jNOEz/AgMBAAECggEALDfVLYAddPSgDx4j4Oc2AmBTJ/48frwZlMFshoPakUtN\n0JofpWEAFElVt8cPRlwSq40V+3TGoaP9/cYkH8pEghQD6+9L04eVvTlresyQ/jG5\nPapfzlv0sHzR39x38w7Y5BRS58oFjOsLCcSMW0bDMZEUbsgfTsKRiCLb+vmUajTr\nuLahvKArOIzCXSoOftQala0mxdrhXDJNuKCGrRWs27qKZpRj8lRp7SBqS4fSaxQi\nIVSbFh5+N0cLfDVeh4kICFhCH6zLk6Ka0h/mE0bkFXJavEvaJ2yfGWgb9jXtqTXM\nKZjAtG+qm4VyO4qdbFmVwPth4zqFbDlAxCaRyqSRQQKBgQD3+qimwwTg7l0QzCoG\nnratKL+TLKgBhWhtzl7csZMem/cjSTF6sv0VFLGQmJbrM3Lj7ZAZoqWsrMWlxc4L\n1s2fCp4ITzYtL8t8g2NkACdrO0gaY05aZRtP3TKJ5hppsaH9yqba0/NdBLLgQfzx\nrQKaZh60R1e12uDtek5C+xOK3wKBgQC3QYoWfpS7Ljtx35/M1yh5B5IPoQ8Mz5ny\nuOguAWD0wTSfN5gJSoTcoZNFX2ejqLIzKMMgpxSaadaHpVIYIZ4w3nBj0fnYJHXK\nVdcrmWx9QeQCFpv+dCjnxXbmB7RZkIlyW4AHh3LYRAR0/ua8motrC6uBeXXUthLoZ\nA0JFJOuh4QKBgFs6Pb1L1YmiZ158naFd1jqR2RidvxkAKVDsMP3j3gnOuvaiQK+x\nFWYh/MkDOdJBVS0BAphLu8NwtC2uPYUhevfdghHwgi/Re3zNIU1yuQ27+2Spz/N1\narzQ1XzhyCnGDaA+Y2/xtYAs8FmMLTADxAdlNjqAXIYshb8X1Z7Sm3flAoGAZUd3\nhc8XbAu1Fs48hv0yhRFGDBU7OB1UO+0thJ+Gcj6FUqlrAVeJ7lXuCp0brjuBoPya\nOuWcYWq1AerAYE3UG7YT71cQ+f/MibK/ZH06lE9iMDVGqW6RXOapO6BucEGNdQJU\n09RsCFIvFGn8I6hV/SdJ9himRi3gnApNCeHJyIECgYAfe3RC2qs3zAx5vsSYFs39\ny5rzwbWvUFH7ssMi/xtQNiUmSx6UCN2Sr+hERUfSHxl/yfNjyE+ldneYV0KIUr9F\nuA9iRApuTKwmtb6PNGqwc5i/mGi77YsQwi/cZBRDf/yRs0pdgDkVMJ7Y1rGIdcj5\nVmZN764Mq+fZecppKK+/gg==\n-----END PRIVATE KEY-----\n",
             "client_email": "token-key@uah-bot-project-448013.iam.gserviceaccount.com",
             "client_id": "108655560595569800378",
             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
@@ -395,20 +395,16 @@ async def calculate(update, context):
     return ConversationHandler.END
 
 
-# Асинхронная инициализация
-async def initialize_bot(app: Application):
+# Асинхронная функция для запуска бота
+async def run_bot():
+    app = Application.builder().token(TOKEN).build()
+
+    # Инициализация
     await app.bot.delete_webhook(drop_pending_updates=True)
     logger.info("Webhook удален, переключение на polling")
     await send_start_message_to_channel(app)
 
-
-# Основная функция
-def main():
-    app = Application.builder().token(TOKEN).build()
-
-    # Выполняем инициализацию асинхронно
-    asyncio.run(initialize_bot(app))
-
+    # Планировщик задач
     app.job_queue.run_daily(
         send_rate_to_channel, time(hour=7, minute=0, tzinfo=poland_tz)
     )
@@ -416,6 +412,7 @@ def main():
         send_rate_to_channel, time(hour=9, minute=0, tzinfo=poland_tz)
     )
 
+    # Обработчики
     app.add_handler(
         ConversationHandler(
             entry_points=[
@@ -432,7 +429,7 @@ def main():
                 ]
             },
             fallbacks=[],
-            per_message=True,
+            per_message=False,  # Убрано per_message=True
         )
     )
     app.add_handler(CommandHandler("start", start))
@@ -446,7 +443,12 @@ def main():
     )
 
     logger.info("Бот запущен")
-    app.run_polling(timeout=30, drop_pending_updates=True)
+    await app.run_polling(timeout=30, drop_pending_updates=True)
+
+
+# Основная функция
+def main():
+    asyncio.run(run_bot())
 
 
 if __name__ == "__main__":
