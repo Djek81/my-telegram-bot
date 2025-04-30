@@ -358,16 +358,28 @@ async def button(update, context: ContextTypes.DEFAULT_TYPE):
 async def send_rate_to_channel(context: ContextTypes.DEFAULT_TYPE):
     bot = context.bot
     channel_id = os.getenv("channel_id")
+    if not channel_id:
+        logger.error("Переменная окружения channel_id не установлена или пуста")
+        return
     rate = get_exchange_rate()
     message = f"Поточний курс USD до UAH: {rate}"
-    await send_message_with_buttons(channel_id, bot, message)
+    try:
+        await send_message_with_buttons(channel_id, bot, message)
+    except Exception as e:
+        log_error(f"Ошибка при отправке сообщения в канал: {e}")
 
 
 # Стартовая сообщение в канал
 async def send_start_message_to_channel(app: Application):
     channel_id = os.getenv("channel_id")
+    if not channel_id:
+        logger.error("Переменная окружения channel_id не установлена или пуста")
+        return
     message = "Бот запущено! 🚀\nВведіть команду /start для початку роботи."
-    await app.bot.send_message(chat_id=channel_id, text=message)
+    try:
+        await app.bot.send_message(chat_id=channel_id, text=message)
+    except Exception as e:
+        log_error(f"Ошибка при отправке стартового сообщения в канал: {e}")
 
 
 # Обработчик диалога
